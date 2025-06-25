@@ -1,27 +1,27 @@
-/* --------------------#1.1 The Browser Environment -------------------- */
+/* --------------------#1.2 DOM Tree -------------------- */
 
-//A host environment is a place where the code is executed
-//It may be a browser or a server, like node.js
-//A host environment provides APIs to interact with the system
+//You can imagine your HTML document as a tree structure, where each element is a node in the tree.
+//The root of the tree is the <html> element, and all other elements are its children.
+//The DOM (Document Object Model) is a representation of this tree structure in memory.
+//You can't directly access a specific element in the DOM tree, but you can walk through the tree to find it.
+//Let's say you want change the background color of the <body> element to red.
+//You can do this by accessing the <body> element and changing its style property.
 
-//in this studying series, we will be using the browser as our host environment
-//Every variable, function or object in JavaScript is inherited from the global object
-//In the browser, the global object is the window object
+window.document.body.style.backgroundColor = 'red';
 
-//The DOM (Document Object Model) is a representation of the HTML document
-//The DOM is a tree-like structure that represents the HTML document
-//And as I commented before, the DOM is a part of the global object (window)
+//One important thing to know is the difference between a node and an element. 
+//A node is a single point in the DOM tree, while an element is a specific type of node that represents an HTML element.
+//For example, the <body> element is an element node, while a text node inside the <body> element is a text node.
+//Pretty much everything in the DOM is a node, but not all nodes are elements, only tags are elements.
 
-//Parallel to the DOM, there is the BOM (Browser Object Model)
-//The BOM is a representation of the browser window
-//The BOM provides APIs to interact with the browser window
-//The BOM is also a part of the global object (window)
-//You can use the BOM to interact with the browser window, like opening a new window, or getting the screen size
+//There are 12 types of nodes in the DOM, but we will only focus on the most common ones:
+//1. Element nodes: These represent HTML elements, such as <div>, <p>, <span>, etc.
+//2. Text nodes: These represent the text content inside an element, such as "Hello World!" inside a <p> element.
+//3. Comment nodes: These represent comments in the HTML, such as <!-- This is a comment -->.
+//4. Document nodes: This represents the entire HTML document, and is the root of the DOM tree.
 
-//There's no much code in this file, but it's important to understand the concepts
-//Here are some examples of how to use the DOM and BOM in JavaScript
 
-window.alert(window.document.body)
-window.alert(navigator.userAgent)
-window.confirm("Wanna go to wiki?") ? window.open("https://en.wikipedia.org/wiki/JavaScript") : window.alert("You didn't want to go to wiki")
+
+
+
 

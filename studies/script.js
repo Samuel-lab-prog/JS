@@ -1,51 +1,37 @@
-/* --------------------#1.4 Searching inside the DOM -------------------- */
+/* --------------------#1.5 Node Properties -------------------- */
 
-//Sometimes, only using relationships is not enough, so we may use special selectors
-//Here's a list of them:
+//Every DOM node may have different properties,
+//But many of them are commoon since all of them Inherits EventTarget
 
-//getElementById() --> Returns the element with the given ID
-//querySelectorAll --> Returns a collection of elements with the given CSS selector
-//querySelector --> Returns the first element with the given CSS selector
+//The nodeType property provides one more, “old-fashioned” way to get the “type” of a DOM node.
 
-//Here are some examples:
+alert(document.querySelector("h1").nodeType); //Prints 1 for element nodes
+alert(document.body.firstChild.nodeType); //Prints 3 for element nodes
+alert(document.nodeType); //Prints 9 for the document object
 
-const secondH1 = document.getElementById("theSecH1")
-alert(secondH1)
+//We also have the node/tag name property
 
-const allP = document.querySelectorAll('body p')
-for(let p of allP){
-    alert(p)
-}
-const firstP = document.querySelector('body > p')
-alert(firstP)
+alert(document.querySelector("h1").nodeName);
+alert(document.querySelector("h1").tagName);
 
-//Those methods searchs the DOM, but sometimes we just want to know if a element respects a specific CSS selector
-//For that, we can use matches()
+//The innerHTML property allows to change the HTML inside an element
 
-if(firstP.matches('body > p'))
-    alert('I am inside the body')
+document.body.innerHTML = "<h1>Hello World!</h1>";
+document.body.innerHTML += "<p>Today is a beautiful day!</p>";
 
-//The method elem.closest() looks for the nearest ancestor that matches the CSS-selector. The elem itself is also included in the search.
-//In other words, the method closest goes up from the element and checks each of parents.
-//If it matches the selector, then the search stops, and the ancestor is returned.
+//The outerHTML is like innerHTML + the element itself
 
-let myOL = document.querySelector('ol')
-let theSection = myOL.closest('.future-class')
+document.querySelector("h1").outerHTML =
+  "<h1>Hello People</h1> <p>Today is a nice day!</p>";
 
-alert(theSection.tagName)
+//The innerHTML property is only valid for element nodes
+//But we have other propertis for that, like textNode or value
+//The textContent property give acess to the text inside a element as a String
 
-//There are many methods getElementsBy*, here are some examples:
+document.querySelector("h1").textContent = "The fox jumped over the river";
 
-//ByTag 
-//ByClass
-//ByName
+//The hidden property is used to hide an element in the document
 
-//You get the idea...
-//Ending this section, remember that getElementBy returns a live collection. Querys return a static collection
+document.querySelector("p").hidden = true;
 
-
-
-
-
-
-
+//There are many more, but these are the main ones

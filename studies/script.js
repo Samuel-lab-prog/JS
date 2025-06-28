@@ -1,40 +1,28 @@
-/* --------------------#1.10 Window sizes and scrolling -------------------- */
+/* --------------------#1.11 Coordinates -------------------- */
 
-//The root document element is html element
-const root = document.documentElement;
-//If you want to get the width of the viewport, you can use the following code:
-const viewportWidth = root.clientWidth;
-//If you want to get the height of the viewport, you can use the following code:
-const viewportHeight = root.clientHeight;
-//If you want to get the width of the viewport including the scrollbar, you can use the following code:
-const viewportWidthWithScrollbar = root.offsetWidth;
-//If you want to get the height of the viewport including the scrollbar, you can use the following code:
-const viewportHeightWithScrollbar = root.offsetHeight;
+//Most JavaScript methods deal with one of two coordinate systems:
+//1. The document coordinate system, which is the coordinate system of the entire document. (let's denotate as clientX and clientY)
+//2. The viewport coordinate system, which is the coordinate system of the visible part of the browser window. (let's denotate as pageX and pageY)
 
-//To reliably obtain the full document height, we should take the maximum of these properties:
+//This method returns an object with properties that describe the position and size of the element in the viewport coordinate system.
+alert(document.querySelector('h1').getBoundingClientRect().top);
 
-let scrollHeight = Math.max(
-  document.body.scrollHeight, document.documentElement.scrollHeight,
-  document.body.offsetHeight, document.documentElement.offsetHeight,
-  document.body.clientHeight, document.documentElement.clientHeight
-);
+//It has the following properties:
+//- top: The distance from the top of the viewport to the top of the element.
+//- right: The distance from the left of the viewport to the right of the element.
+//- bottom: The distance from the top of the viewport to the bottom of the element.
+//- left: The distance from the left of the viewport to the left of the element.
+//- width: The width of the element.
+//- height: The height of the element.
+//- x: The same as left.
+//- y: The same as top.
+//- toJSON: A method that returns a JSON representation of the object.
+//- toString: A method that returns a string representation of the object.
 
-alert('Full document height, with scrolled out part: ' + scrollHeight);
+//The elementFromPoint method returns the topmost element at the specified coordinates in the viewport coordinate system.
+//It takes two arguments: the x and y coordinates of the point in the viewport coordinate system
+alert(document.elementFromPoint(100, 100));
 
 
-//To get the current scroll position in pixels, we can use the following code:
-alert('Current scroll position in pixels: ' + window.pageYOffset);  
-alert('Current scroll position in pixels: ' + window.pageXOffset);
 
-//The method scrollBy() scrolls the document by the specified number of pixels in the vertical direction.
-window.scrollBy(0, 300); // Scrolls down by 300 pixels
 
-//The method scrollTo() scrolls the document to the specified position in the vertical direction.
-window.scrollTo(0, 300); // Scrolls to the position 300 pixels
-
-//The scrollIntoView() method scrolls the document so that the specified element is visible in the viewport.
-const cuteText = document.getElementById('cuteText');
-cuteText.scrollIntoView({ behavior: 'smooth' });
-
-//if you want to make the body unscrollable, you can use the following code:
-document.body.style.overflow = 'hidden';

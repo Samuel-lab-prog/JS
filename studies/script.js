@@ -1,37 +1,37 @@
-/* --------------------#1.5 Node Properties -------------------- */
+/* --------------------#1.6 Node Properties -------------------- */
 
-//Every DOM node may have different properties,
-//But many of them are commoon since all of them Inherits EventTarget
+//Most standard HTML attributes becmome properties of element objects
+//DOM nodes are regular JavaScript objects. We can alter them.
+document.body.myData = {
+  name: "Caesar",
+  title: "Imperator",
+};
 
-//The nodeType property provides one more, “old-fashioned” way to get the “type” of a DOM node.
+alert(document.body.myData.title); // Imperator
+//We can even add methods
+document.body.sayTagName = function () {
+  alert(this.tagName);
+};
 
-alert(document.querySelector("h1").nodeType); //Prints 1 for element nodes
-alert(document.body.firstChild.nodeType); //Prints 3 for element nodes
-alert(document.nodeType); //Prints 9 for the document object
+document.body.sayTagName(); // BODY (the value of "this" in the method is document.body)
+//If we create a non-standard HTML attribute in an element, the DOM does not generate a property for this is attrubute
+//So, if an attribute is non-standard, there won’t be a DOM-property for it. Is there a way to access such attributes?
 
-//We also have the node/tag name property
+//Sure. All attributes are accessible by using the following methods:
 
-alert(document.querySelector("h1").nodeName);
-alert(document.querySelector("h1").tagName);
+/* elem.hasAttribute(name) – checks for existence.
+elem.getAttribute(name) – gets the value.
+elem.setAttribute(name, value) – sets the value.
+elem.removeAttribute(name) – removes the attribute. */
 
-//The innerHTML property allows to change the HTML inside an element
+//The attributes collection is iterable
+//When a standard attribute changes, the corresponding property is auto-updated, and (with some exceptions) vice versa.
+//But there are exclusions, for instance input.value synchronizes only from attribute → property, but not back:
+//DOM properties are not always strings. For instance, the input.checked property (for checkboxes) is a boolean
 
-document.body.innerHTML = "<h1>Hello World!</h1>";
-document.body.innerHTML += "<p>Today is a beautiful day!</p>";
+//All attributes starting with “data-” are reserved for programmers’ use. They are available in the dataset property.
+//For instance, if an elem has an attribute named "data-about", it’s available as elem.dataset.about.
 
-//The outerHTML is like innerHTML + the element itself
+document.querySelector('h1').dataset.turnGreen = 'true'
+alert(document.querySelector('h1').dataset.turnGreen)
 
-document.querySelector("h1").outerHTML =
-  "<h1>Hello People</h1> <p>Today is a nice day!</p>";
-
-//The innerHTML property is only valid for element nodes
-//But we have other propertis for that, like textNode or value
-//The textContent property give acess to the text inside a element as a String
-
-document.querySelector("h1").textContent = "The fox jumped over the river";
-
-//The hidden property is used to hide an element in the document
-
-document.querySelector("p").hidden = true;
-
-//There are many more, but these are the main ones

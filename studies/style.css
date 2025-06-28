@@ -1,4 +1,9 @@
 body{
     background-color: rgb(243, 243, 243);
-    font-family: monospace;
+}
+.card{
+    padding: 20px;
+    background-color: rgb(138, 226, 138);
+    color: rgb(0, 92, 0);
+    border-radius: 10px;
 }

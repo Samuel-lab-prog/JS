@@ -1,37 +1,68 @@
-/* --------------------#1.6 Node Properties -------------------- */
+/* --------------------#1.7 Modifying the document -------------------- */
 
-//Most standard HTML attributes becmome properties of element objects
-//DOM nodes are regular JavaScript objects. We can alter them.
-document.body.myData = {
-  name: "Caesar",
-  title: "Imperator",
-};
+//To create DOM nodes, there are two methods:
 
-alert(document.body.myData.title); // Imperator
-//We can even add methods
-document.body.sayTagName = function () {
-  alert(this.tagName);
-};
+//document.createElement(tag)
+//document.createTextNode(text)
 
-document.body.sayTagName(); // BODY (the value of "this" in the method is document.body)
-//If we create a non-standard HTML attribute in an element, the DOM does not generate a property for this is attrubute
-//So, if an attribute is non-standard, there won’t be a DOM-property for it. Is there a way to access such attributes?
+let firstDiv = document.createElement('div')
 
-//Sure. All attributes are accessible by using the following methods:
+firstDiv.className = 'card'
 
-/* elem.hasAttribute(name) – checks for existence.
-elem.getAttribute(name) – gets the value.
-elem.setAttribute(name, value) – sets the value.
-elem.removeAttribute(name) – removes the attribute. */
+firstDiv.innerHTML = '<p>Hello World'
 
-//The attributes collection is iterable
-//When a standard attribute changes, the corresponding property is auto-updated, and (with some exceptions) vice versa.
-//But there are exclusions, for instance input.value synchronizes only from attribute → property, but not back:
-//DOM properties are not always strings. For instance, the input.checked property (for checkboxes) is a boolean
+//Now, we just need to insert. There are some ways of doing that
 
-//All attributes starting with “data-” are reserved for programmers’ use. They are available in the dataset property.
-//For instance, if an elem has an attribute named "data-about", it’s available as elem.dataset.about.
+document.body.append(firstDiv)
 
-document.querySelector('h1').dataset.turnGreen = 'true'
-alert(document.querySelector('h1').dataset.turnGreen)
+//We can append the element in any place
+
+document.body.querySelector('h1').append(firstDiv)
+
+//Notice that the div were removed form the bottom and inserted in the top
+
+//Here are more insertion methods, they specify different places where to insert:
+/* 
+node.append(...nodes or strings) – append nodes or strings at the end of node,
+node.prepend(...nodes or strings) – insert nodes or strings at the beginning of node,
+node.before(...nodes or strings) –- insert nodes or strings before node,
+node.after(...nodes or strings) –- insert nodes or strings after node,
+node.replaceWith(...nodes or strings) –- replaces node with the given nodes or strings.
+ */
+
+//Insert adjacentHTML (inserts html as a string)
+//The first parameter is a code word, specifying where to insert relative to elem. Must be one of the following:
+
+/* "beforebegin" – insert html immediately before elem,
+"afterbegin" – insert html into elem, at the beginning,
+"beforeend" – insert html into elem, at the end,
+"afterend" – insert html immediately after elem.
+The second parameter is an HTML string, that is inserted “as HTML”. */
+
+//Let's remove our firstDiv
+firstDiv.remove()
+
+//We can clone this div to put another identical message
+//The call elem.cloneNode(true) creates a “deep” clone of the element
+//  – with all attributes and subelements. If we call elem.cloneNode(false), then the clone is made without child elements.
+
+let secondDiv = firstDiv.cloneNode(true);
+document.body.append(secondDiv);
+
+//DocumentFragment
+//Is like a temporary, invisible container used to build DOM structures off-screen—without triggering reflows or repaints
+//Until you're ready to insert everything at once.
+
+function getListContent() {
+  let fragment = new DocumentFragment();
+
+  for(let i=1; i<=3; i++) {
+    let li = document.createElement('li');
+    li.append(i);
+    fragment.append(li);
+  }
+
+  return fragment;
+}
+ulSpecial.append(getListContent())
 

@@ -1,33 +1,42 @@
-/* --------------------#2.5 Dispatching custom events -------------------- */
+/* --------------------#3.1 Mouse events -------------------- */
 
-//You can create and dispatch custom events in JavaScript to handle specific actions or interactions in your application.
-//This is useful for decoupling components and allowing them to communicate without direct references.
-//Let's create a custom event called doubleClickEvent that will be dispatched when a user double-clicks on a button.
+//There are many mouse events, and just one can trigger many others mouse events.
+//All click events have the button property, which indicates which button was pressed.
 
-const button = document.querySelector('.button');
+//The possible values of event.button are:
+// 0 - the left button
+// 1 - the middle button (usually the wheel button)
+// 2 - the right button
+// 3 - the back button (usually the side button on the left)
+// 4 - the forward button (usually the side button on the right)
 
-// Create a custom event
-const doubleClickEvent = new CustomEvent('doubleClickEvent', {
-  detail: { message: 'Button was double-clicked!' }
+//We also can detect if the click happenend using a specific button, like alt, ctrl, or shift.
+
+let button = document.querySelector("button");
+
+button.addEventListener("click", (event) => {
+  if (event.button === 0 && event.altKey) {
+    alert("Left button clicked with Alt");
+  } else if (event.button === 0 && event.ctrlKey) {
+    alert("Left button clicked with Ctrl");
+  } else if (event.button === 0 && event.shiftKey) {
+    alert("Left button clicked with Shift");
+  } else {
+    alert("Left button clicked without any modifier keys");
+  }
 });
 
-// Dispatch the custom event when the button is double-clicked
-button.addEventListener('dblclick', function() {
-  button.dispatchEvent(doubleClickEvent);
+//All mouse events have the event.clientX and event.clientY properties, which indicate the position of the mouse cursor relative to the viewport.
+//Double click event has a 'problem', it selects the text under the cursor.
+let input = document.querySelector("input");
+input.addEventListener("dblclick", (event) => {
+  event.preventDefault();
+  alert("Double click detected");
 });
-
-// Listen for the custom event
-button.addEventListener('doubleClickEvent', function(event) {
-  alert(event.detail.message);
+//But there are more ways of doing this
+//You can even protect your content for copy-paste, but it's not recommended.
+let h1 = document.querySelector("h1");
+h1.addEventListener("copy", (event) => {
+  event.preventDefault();
+  alert("Copying is not allowed");
 });
-// This code listens for a double-click on the button and dispatches a custom event.
-
-const button2 = document.getElementById('btn2');
-
-
-button2.addEventListener("hello", function(event) {
-    alert("Hello from " + event.target.tagName); 
-  });
-
-  let event = new Event("hello", {bubbles: true}); 
-  button2.dispatchEvent(event);

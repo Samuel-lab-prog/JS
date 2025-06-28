@@ -1,37 +1,62 @@
-/* --------------------#2.2 Event Bubbling -------------------- */
+/* --------------------#2.3 Event Delegation -------------------- */
 
-//If an events is assigned to an element that contains other elements, the event will bubble up to the parent element.
-//This is called event bubbling.
+//The idea is, instead of attaching an event listener to every single element, we attach it to a common ancestor
+//And let the event bubble up from the target element to the ancestor. This way, we can handle events for multiple elements with a single event listener.
+//For this example, we will use a table with multiple rows and cells, and we will attach a click event listener to the table itself.
 
-function handleClick(event) {
-  this.style.color = "red";
-  this.style.backgroundColor = "black";
-  this.style.fontSize = "30px";
-  this.style.border = "3px solid red";
-  this.style.padding = "20px";
-  this.style.textAlign = "center";
-  alert('This element triggered: ' + event.target.tagName);
+let table = document.querySelector("table");
+
+function highlightCell(event) {
+  let target = event.target;
+  if (target.tagName !== "TD") return;
+  let cells = table.querySelectorAll("td");
+  cells.forEach((cell) => {
+    cell.classList.remove("card");
+  });
+  target.classList.add("card");
 }
-const cuteText = document.getElementById("cuteText");
-cuteText.addEventListener("mouseenter", handleClick);
+table.addEventListener("click", highlightCell);
 
-//You can get the element that triggered the event using `event.target`.
-const firstButton = document.getElementById("firstButton");
-firstButton.addEventListener('mouseenter', handleClick);
+//But there is a catch! Because if we click on a element inside the cell, it will not work.
+//To fix this, we can use event delegation to check if the target is a cell or an element inside the cell.
 
-const body = document.body;
-body.addEventListener('click', handleClick);
+function highlightCellCorrect(event) {
+  let td = event.target.closest("td");
+  if (!td) return;
+  if (!table.contains(td)) return;
+  let cells = table.querySelectorAll("td");
+  cells.forEach((cell) => {
+    cell.classList.remove("card");
+  });
+  td.classList.add("card");
+}
+table.removeEventListener("click", highlightCell);
+table.addEventListener("click", highlightCellCorrect);
 
-//if you want to stop the event from bubbling up, you can use `event.stopPropagation()`.
-const secondButton = document.getElementById("secondButton");
-secondButton.addEventListener('click', function(event) {
-  handleClick.call(this, event);
-  event.stopPropagation(); // This will stop the event from bubbling up to the body
-});
-//You can also use `event.stopImmediatePropagation()` to stop all other event listeners from being called.
+//Imagine that we have a menu with 3 buttons and we have an object with 3 methods.
+//We can use event delegation to handle the click events for all buttons with a single event listener.
 
-//During an event propagation, there are three phases:
-//1. Capturing phase: The event starts from the root and goes down to the target
-//2. Target phase: The event reaches the target element
-//3. Bubbling phase: The event bubbles up from the target element to the root
-//You can specify the phase in which you want to listen to the event by passing a third argument to `addEventListener`.
+let menu = document.querySelector("#menu");
+
+class Menu {
+  constructor(elem) {
+    this.elem = elem;
+    elem.onclick = this.handleClick.bind(this);
+  }
+  save(){
+    alert("Save");
+  }
+  load(){
+    alert("Load");
+  }
+  reset(){
+    alert("Reset");
+  }
+  handleClick(event) {
+    let action = event.target.dataset.action;
+    if(action){
+      this[action]();
+    }
+  }
+}
+new Menu(menu);

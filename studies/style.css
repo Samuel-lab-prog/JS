@@ -14,3 +14,11 @@ body{
     font-family: Arial, Helvetica, sans-serif;
     border-radius: 20px;
 }
+.example{
+    width: 300px;
+    height: 50px;
+    border: 25px solid #E8C48F;
+    padding: 20px;
+    text-align: justify;
+    overflow: auto;
+}

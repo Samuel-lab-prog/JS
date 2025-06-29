@@ -1,19 +1,44 @@
-/* --------------------#3.2 Moving the mouse -------------------- */
+/* --------------------#3.3 Dragging -------------------- */
 
-//The mouseover and mouseout have a special property called relatedTarget
-//The relatedTarget is the element that the mouse is moving to or from
+//The dragging and drop algorithm works like this:
+//1. mouse down on a draggable element
+//2. mouse move on the document
+//3. mouse up on the document
+const ball = document.querySelector('.ball');
+ball.onmousedown = function(event) {
 
-let table = document.querySelector("table");
+  let shiftX = event.clientX - ball.getBoundingClientRect().left;
+  let shiftY = event.clientY - ball.getBoundingClientRect().top;
 
-table.addEventListener("mouseover", (event) => {
-    let target = event.target;
-    if (target.tagName === "TD") {
-      target.style.backgroundColor = "lightblue";
-      event.relatedTarget.style.backgroundColor = "lightgreen";
-    }
-});
-//The related targer can be null, so be careful when using it
+  ball.style.position = 'absolute';
+  ball.style.zIndex = 1000;
+  document.body.append(ball);
 
-//If the mouse moves from the parent to a child element, we get a mouseout event on the parent
+  moveAt(event.pageX, event.pageY);
 
-//Mouse enter and mouse leave are similar to mouseover and mouseout, but they do not bubble
+  // moves the ball at (pageX, pageY) coordinates
+  // taking initial shifts into account
+  function moveAt(pageX, pageY) {
+    ball.style.left = pageX - shiftX + 'px';
+    ball.style.top = pageY - shiftY + 'px';
+  }
+
+  function onMouseMove(event) {
+    moveAt(event.pageX, event.pageY);
+  }
+
+  // move the ball on mousemove
+  document.addEventListener('mousemove', onMouseMove);
+
+  // drop the ball, remove unneeded handlers
+  ball.onmouseup = function() {
+    document.removeEventListener('mousemove', onMouseMove);
+    ball.onmouseup = null;
+  };
+
+};
+
+ball.ondragstart = function() {
+  return false;
+};
+

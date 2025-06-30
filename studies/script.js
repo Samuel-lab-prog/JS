@@ -1,56 +1,35 @@
-/* --------------------#4.2 Focus and blur -------------------- */
+/* --------------------#4.3 Form events -------------------- */
 
-// Focus is the ability to direct the user's attention to a specific element on the page.
-// This is often used for form inputs, buttons, and other interactive elements.
-// The focus can be set programmatically using JavaScript, and it can also be managed through keyboard navigation.
-// Losing the focus (blur), means that the data in the input field is no longer being edited.
-
-// Focus and blur are events. Here's a quick example of how to use them:
-
-let myEmail = document.getElementById('emailInput');
-let error = document.getElementById('emailError');
-myEmail.onblur = function() {
-  if(!myEmail.value.includes('@')) 
-    error.innerHTML = 'Please enter a valid email address.';
-  else
-    myEmail.style.backgroundColor = error.innerHTML = '';
-}
-myEmail.onfocus = function() {
-    error.innerHTML = '';
-}
-
-// The methods focus() and blur() can be used to set or remove focus from an element.
-// Let's make the user not be able to exist the input field until they enter a valid email address:
-let secondEmail = document.getElementById('secondEmailInput');
-secondEmail.onblur = function() {
-  if(!secondEmail.value.includes('@')) {
-    error.innerHTML = 'Please enter a valid email address.';
-    secondEmail.focus(); // Set focus back to the input field
-  } else {
-    error.innerHTML = '';
-  }
-}
-
-// Some elements are not focusable by default, such as <div> or <span>.
-// To make them focusable, you can add the tabindex attribute:
-
-let myList = document.getElementById('list');
-let listItems = myList.getElementsByTagName('li');
-listItems[0].tabIndex = 1; // Make the first list item focusable
-listItems[1].tabIndex = 2; // Make the second list item focusable
-listItems[2].tabIndex = 0; // Skips the third list item
-// This means that the third list item will not be focusable, but the fourth will be
-listItems[3].tabIndex = 4; // Make the fourth list item focusable
-listItems[4].tabIndex = -1; // Make the fifth list item not focusable
-
-// Blur and focus events do not bubble, meaning they do not propagate up the DOM tree.
-// This means that if you have an event listener on a parent element, it will not be triggered when a child element receives focus or loses focus.
-// However, you can use the focusin and focusout events, which do bubble:
-
-myList.addEventListener('focusin', function(event) {
-    event.target.style.backgroundColor = 'lightblue'; // Change background color of focused element
+//The change event triggers when the element has finished changing.
+//For text inputs that means that the event occurs when it loses focus.
+let myFirstEmail = document.getElementById("email1");
+myFirstEmail.addEventListener("change", function() {
+    alert("The email has changed to: " + myFirstEmail.value);
+});
+//For checkboxes, the change event occurs when the checkbox is checked or unchecked.
+let myCheckbox = document.getElementById("checkbox1");
+myCheckbox.addEventListener("change", function() {
+    if (myCheckbox.checked) {
+        alert("The checkbox is checked.");
+    } else {
+        alert("The checkbox is unchecked.");
+    }
 });
 
-myList.addEventListener('focusout', function(event) {
-    event.target.style.backgroundColor = ''; // Reset background color when focus is lost
+//The input event triggers when the value of an input changes.
+let feedback = document.getElementById("feedback");
+let mySecondEmail = document.getElementById("email2");
+mySecondEmail.addEventListener("input", function() {
+    feedback.textContent = "The email is: " + mySecondEmail.value;
+    if(feedback.textContent === "The email is: ") {
+        feedback.textContent = "Please enter an email.";
+    }
+});
+
+//Cut, copy and paste are also events that can be handled.
+//We can use preventDefault() to stop the default action of these events.
+let myTextArea = document.getElementById("textarea1");
+myTextArea.addEventListener("copy", function(event) {
+    event.preventDefault();
+    alert("Copying is disabled. you cannot copy");
 });

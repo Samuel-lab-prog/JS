@@ -1,12 +1,41 @@
-/* --------------------#5.2 defer and async-------------------- */
+/* --------------------#5.3 Resource loading-------------------- */
 
-//The defer attribute is a boolean attribute that can be added to the <script> tag.
-//When present, it indicates that the script should be executed after the document has been parsed.
-//This means that the script will not block the rendering of the page, and the browser can continue to load and display the content while the script is being fetched and executed.
+//The browser allows us to track the loading of external resources – scripts, iframes, pictures and so on.
+//There are two events for it:
+//onload – successful load,
+//onerror – an error occurred.
 
-//The async attribute is also a boolean attribute that can be added to the <script> tag.
-//When present, it indicates that the script should be executed asynchronously as soon as it is available.
-//This means that the script will be fetched and executed in parallel with the rest of the page, without blocking the rendering of the content.
+let script = document.createElement('script');
+script.src = "test.js";
 
-//In general, it is recommended to use the defer attribute for scripts that need to access the DOM,
-//and the async attribute for scripts that do not depend on the DOM or other scripts.
+document.head.append(script);
+
+script.onload = () => {
+  sayHi();
+};
+
+script.onerror = () => {
+  alert("Error loading script");
+};
+
+//You can use this for any external resource, not just scripts.
+let img = document.createElement('img');
+img.src = "../test.png";
+
+document.body.append(img);
+
+img.onload = () => {
+  alert("Image loaded successfully");
+};
+
+img.onerror = () => {
+  alert("Error loading image");
+};
+
+//There’s a rule: scripts from one site can’t access contents of the other site. So, e.g. a script at https://facebook.com can’t read the user’s mailbox at https://gmail.com.
+//To allow cross-origin access, the <script> tag needs to have the crossorigin attribute, plus the remote server must provide special headers.
+//There are three levels of cross-origin access:
+
+//1 No crossorigin attribute – access prohibited.
+//2 crossorigin="anonymous" – access allowed if the server responds with the header Access-Control-Allow-Origin with * or our origin. Browser does not send authorization information and cookies to remote server.
+//3 crossorigin="use-credentials" – access allowed if the server sends back the header Access-Control-Allow-Origin with our origin and Access-Control-Allow-Credentials: true. Browser sends authorization information and cookies to remote server.

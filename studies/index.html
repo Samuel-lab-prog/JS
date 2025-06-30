@@ -73,10 +73,12 @@
       </tbody>
     </table>
     <form action="" name="firstForm" id="firstForm">
+      <input type="email" id="emailInput" name="emailInput" />
+      <p id="emailError" style="color: red;"></p>
       <label for="name">Name:</label>
       <input type="text" id="name" name="name" required />
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required />
+      <input type="email" id="secondEmailInput" name="email" required />
       <input type="submit" value="Submit" />
       <input type="radio" id="option1" name="option" value="option1" />
       <input type="radio" id="option2" name="option" value="option2" />
@@ -94,6 +96,13 @@
       </select>
       <input type="submit" value="Submit" />
     </form>
+    <ul id="list">
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+      <li>Item 4</li>
+      <li>Item 5</li>
+    </ul>
     <script src="script.js"></script>
   </body>
 </html>

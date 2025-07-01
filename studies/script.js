@@ -1,41 +1,29 @@
-/* --------------------#5.3 Resource loading-------------------- */
+/* --------------------#6.1 Mutation observer-------------------- */
 
-//The browser allows us to track the loading of external resources – scripts, iframes, pictures and so on.
-//There are two events for it:
-//onload – successful load,
-//onerror – an error occurred.
+//MutationObserver is a built-in object that observes a DOM element and fires a callback when it detects a change.
 
-let script = document.createElement('script');
-script.src = "test.js";
+let observer = new MutationObserver(mutatations);
+let h1 = document.querySelector("h1");
 
-document.head.append(script);
-
-script.onload = () => {
-  sayHi();
+//Config is an object that specifies what types of changes to observe.
+config = {
+  attributes: true, // Observe changes to attributes
+  childList: true, // Observe changes to child elements
+  subtree: true // Observe changes to all descendants
 };
+//After any change, the callback function will be called with an array of MutationRecord objects that describe the changes.
+function mutatations(mutations) {
+  mutations.forEach((mutation) => {
+    alert(mutation.type + " detected on " + mutation.target.tagName);
+    alert("Old value: " + mutation.oldValue);
+    if (mutation.type === "attributes") { 
+      alert("Attribute changed: " + mutation.attributeName);
+    }
+  });
+}
 
-script.onerror = () => {
-  alert("Error loading script");
-};
+observer.observe(h1, config);
 
-//You can use this for any external resource, not just scripts.
-let img = document.createElement('img');
-img.src = "../test.png";
-
-document.body.append(img);
-
-img.onload = () => {
-  alert("Image loaded successfully");
-};
-
-img.onerror = () => {
-  alert("Error loading image");
-};
-
-//There’s a rule: scripts from one site can’t access contents of the other site. So, e.g. a script at https://facebook.com can’t read the user’s mailbox at https://gmail.com.
-//To allow cross-origin access, the <script> tag needs to have the crossorigin attribute, plus the remote server must provide special headers.
-//There are three levels of cross-origin access:
-
-//1 No crossorigin attribute – access prohibited.
-//2 crossorigin="anonymous" – access allowed if the server responds with the header Access-Control-Allow-Origin with * or our origin. Browser does not send authorization information and cookies to remote server.
-//3 crossorigin="use-credentials" – access allowed if the server sends back the header Access-Control-Allow-Origin with our origin and Access-Control-Allow-Credentials: true. Browser sends authorization information and cookies to remote server.
+h1.classList.add("card"); //This will trigger the observer and call the callback function
+//To stop observing, you can call the disconnect method on the observer.
+// observer.disconnect(); // Uncomment this line to stop observing
